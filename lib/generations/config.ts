@@ -90,6 +90,25 @@ export const GENERATION_CONFIGS: GenerationConfigMap = {
       },
     ],
   },
+  general: {
+    backend: 'kie',
+    model: 'grok-imagine/text-to-video',
+    creditCost: 5,
+    displayName: 'General Video',
+    description: 'Generate videos from any text prompt',
+    defaultOptions: {
+      aspectRatio: DEFAULT_ASPECT_RATIO,
+    },
+    customizableFields: [
+      {
+        key: 'aspectRatio',
+        label: 'Aspect Ratio',
+        type: 'select',
+        options: ASPECT_RATIOS.map((r) => ({ value: r, label: r })),
+        default: DEFAULT_ASPECT_RATIO,
+      },
+    ],
+  },
 }
 
 /**

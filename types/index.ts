@@ -15,7 +15,7 @@
  *
  * To add a new niche, add it here AND in lib/generations/config.ts
  */
-export type GenerationType = 'asmr_video'
+export type GenerationType = 'asmr_video' | 'general'
 // Add new types here when needed:
 // | 'slideshow'
 // | 'podcast'
@@ -40,11 +40,20 @@ export type AsmrVideoOptions = {
 }
 
 /**
+ * Options for general video generation (from chat).
+ */
+export type GeneralVideoOptions = {
+  aspectRatio?: AspectRatio
+  mode?: string
+}
+
+/**
  * Map of generation type to its options type.
  * Add new option interfaces here when adding niches.
  */
 export type GenerationOptionsMap = {
   asmr_video: AsmrVideoOptions
+  general: GeneralVideoOptions
 }
 
 /**

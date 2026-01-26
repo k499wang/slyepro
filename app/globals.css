@@ -139,3 +139,15 @@
     @apply bg-zinc-700;
   }
 }
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+.pause-on-hover:hover {
+  animation-play-state: paused;
+}

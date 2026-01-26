@@ -22,6 +22,7 @@ const ITEMS_PER_PAGE = 10
 
 const GENERATION_TYPES = [
   { id: 'all', label: 'All Types' },
+  { id: 'general', label: 'General' },
   { id: 'asmr_video', label: 'ASMR Video' },
 ]
 

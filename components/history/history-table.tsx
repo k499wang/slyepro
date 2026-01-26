@@ -28,9 +28,7 @@ const statusStyles: Record<GenerationStatus, string> = {
 
 const typeLabels: Record<string, string> = {
   asmr_video: 'ASMR',
-  image: 'Image',
-  music: 'Music',
-  video: 'Video',
+  general: 'General',
 }
 
 function formatDate(dateString: string): string {

@@ -21,7 +21,7 @@ function getStripe() {
     return null
   }
 
-  return new Stripe(secretKey, { apiVersion: '2024-06-20' })
+  return new Stripe(secretKey, { apiVersion: '2025-12-15.clover' })
 }
 
 export async function GET(request: Request) {
