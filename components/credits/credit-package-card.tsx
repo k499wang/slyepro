@@ -45,11 +45,15 @@ export function CreditPackageCard({
         <ul className="space-y-3">
           <li className="flex items-center gap-3 text-sm text-zinc-400">
             <Check className="h-4 w-4 text-white" />
-            {Math.floor(pkg.credits / 5)} ASMR videos
+            {Math.floor(pkg.credits / 5)} videos
           </li>
           <li className="flex items-center gap-3 text-sm text-zinc-400">
             <Check className="h-4 w-4 text-white" />
             Never expires
+          </li>
+          <li className="flex items-center gap-3 text-sm text-zinc-400">
+            <Check className="h-4 w-4 text-white" />
+            Commercial usage rights
           </li>
         </ul>
         <Button asChild className="w-full bg-white text-black hover:bg-zinc-200 font-medium">
