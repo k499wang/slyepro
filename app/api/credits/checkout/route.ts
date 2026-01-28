@@ -1,77 +1,99 @@
 import { NextResponse } from 'next/server'
-import Stripe from 'stripe'
-import { CREDIT_PACKAGES } from '@/lib/constants'
 import { createClient } from '@/lib/supabase/server'
+import {
+  getAppUrl,
+  getStripeClient,
+  getStripePackageConfig,
+} from '@/lib/stripe/server'
 
 export const runtime = 'nodejs'
 
-function redirectWithError(origin: string, message: string) {
-  const url = new URL('/dashboard/credits', origin)
+type CheckoutRequest = {
+  packageId: string
+}
+
+function redirectWithError(appUrl: string, message: string) {
+  const url = new URL('/dashboard/credits', appUrl)
   url.searchParams.set('error', message)
   return NextResponse.redirect(url)
 }
 
-function getStripe() {
-  const secretKey = process.env.STRIPE_SECRET_KEY
-  if (!secretKey) {
+function parseCheckoutRequest(formData: FormData): CheckoutRequest | null {
+  const packageValue = formData.get('package')
+  if (typeof packageValue !== 'string') {
     return null
   }
 
-  return new Stripe(secretKey, { apiVersion: '2025-12-15.clover' })
+  const packageId = packageValue.trim()
+  if (!packageId) {
+    return null
+  }
+
+  return { packageId }
 }
 
-export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
-  const packageId = searchParams.get('package')?.trim()
+export async function POST(request: Request) {
+  const appUrlResult = getAppUrl()
+  if (!appUrlResult.ok) {
+    return NextResponse.json({ error: appUrlResult.error }, { status: 500 })
+  }
 
   const supabase = await createClient()
   const { data: authData } = await supabase.auth.getUser()
   if (!authData.user) {
-    const url = new URL('/login', origin)
+    const url = new URL('/login', appUrlResult.value)
     url.searchParams.set('error', 'Please log in to purchase credits.')
     return NextResponse.redirect(url)
   }
 
-  if (!packageId) {
-    return redirectWithError(origin, 'Missing package selection.')
+  const formData = await request.formData()
+  const checkoutRequest = parseCheckoutRequest(formData)
+
+  if (!checkoutRequest) {
+    return redirectWithError(appUrlResult.value, 'Missing package selection.')
   }
 
-  const selectedPackage = CREDIT_PACKAGES.find((pkg) => pkg.id === packageId)
-  if (!selectedPackage) {
-    return redirectWithError(origin, 'Invalid credit package.')
+  const selectedPackageResult = getStripePackageConfig(checkoutRequest.packageId)
+  if (!selectedPackageResult.ok) {
+    return redirectWithError(appUrlResult.value, selectedPackageResult.error)
   }
 
-  const stripe = getStripe()
-  if (!stripe) {
-    return redirectWithError(origin, 'Stripe secret key is missing.')
+  const stripeResult = getStripeClient()
+  if (!stripeResult.ok) {
+    return redirectWithError(appUrlResult.value, stripeResult.error)
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const selectedPackage = selectedPackageResult.value
+
+  const session = await stripeResult.value.checkout.sessions.create({
     mode: 'payment',
     line_items: [
       {
-        quantity: 1,
         price_data: {
-          currency: 'usd',
+          currency: selectedPackage.currency,
           unit_amount: selectedPackage.price,
           product_data: {
-            name: `${selectedPackage.name} Credits`,
+            name: `${selectedPackage.name} credits`,
           },
         },
+        quantity: 1,
       },
     ],
-    success_url: `${origin}/api/credits/confirm?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/dashboard/credits?canceled=1`,
+    success_url: `${appUrlResult.value}/api/credits/confirm?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${appUrlResult.value}/dashboard/credits?canceled=1`,
     metadata: {
       packageId: selectedPackage.id,
-      credits: `${selectedPackage.credits}`,
       userId: authData.user.id,
     },
     client_reference_id: authData.user.id,
+    customer_email: authData.user.email ?? undefined,
   })
 
   if (!session.url) {
-    return redirectWithError(origin, 'Stripe session could not be created.')
+    return redirectWithError(
+      appUrlResult.value,
+      'Stripe session could not be created.'
+    )
   }
 
   return NextResponse.redirect(session.url, { status: 303 })

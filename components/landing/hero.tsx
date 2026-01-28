@@ -5,6 +5,7 @@ import { ArrowRight, Play, CheckCircle2, DollarSign, Sparkles, Send, Zap } from 
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { LoadedVideo } from './loaded-video'
 
 export function Hero() {
   const [prompt, setPrompt] = useState('')
@@ -93,19 +94,19 @@ export function Hero() {
                 
                 {/* Background Phone 1 (Left Overlap) */}
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[200px] aspect-[9/19] bg-zinc-900 rounded-[2rem] border-2 border-zinc-800 shadow-2xl overflow-hidden -rotate-6 opacity-30 z-0 scale-90 translate-x-4">
-                   <video src="/presets/ai_ugc.mp4" className="w-full h-full object-cover" autoPlay muted loop playsInline />
+                   <LoadedVideo src="/presets/ai_ugc.mp4" className="w-full h-full object-cover" autoPlay muted loop playsInline />
                 </div>
 
                 {/* Background Phone 2 (Right Overlap) */}
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[200px] aspect-[9/19] bg-zinc-900 rounded-[2rem] border-2 border-zinc-800 shadow-2xl overflow-hidden rotate-6 opacity-30 z-0 scale-90 -translate-x-4">
-                   <video src="/presets/which.mp4" className="w-full h-full object-cover" autoPlay muted loop playsInline />
+                   <LoadedVideo src="/presets/which.mp4" className="w-full h-full object-cover" autoPlay muted loop playsInline />
                 </div>
 
                 {/* Main Front Phone */}
                 <div className="relative w-[280px] sm:w-[280px] aspect-[9/19] bg-zinc-950 rounded-[2.5rem] border-4 border-zinc-900 shadow-[0_0_80px_-20px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10 z-10">
                    <div className="absolute inset-0 bg-zinc-800">
-                      <video 
-                        src="/presets/asmr.mp4" 
+                      <LoadedVideo
+                        src="/presets/asmr.mp4"
                         className="w-full h-full object-cover opacity-90"
                         autoPlay
                         muted

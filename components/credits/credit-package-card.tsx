@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Check, Zap } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -45,10 +44,6 @@ export function CreditPackageCard({
         <ul className="space-y-3">
           <li className="flex items-center gap-3 text-sm text-zinc-400">
             <Check className="h-4 w-4 text-white" />
-            {Math.floor(pkg.credits / 5)} videos
-          </li>
-          <li className="flex items-center gap-3 text-sm text-zinc-400">
-            <Check className="h-4 w-4 text-white" />
             Never expires
           </li>
           <li className="flex items-center gap-3 text-sm text-zinc-400">
@@ -56,9 +51,12 @@ export function CreditPackageCard({
             Commercial usage rights
           </li>
         </ul>
-        <Button asChild className="w-full bg-white text-black hover:bg-zinc-200 font-medium">
-          <Link href={`/api/credits/checkout?package=${pkg.id}`}>Purchase</Link>
-        </Button>
+        <form action="/api/credits/checkout" method="POST">
+          <input type="hidden" name="package" value={pkg.id} />
+          <Button type="submit" className="w-full bg-white text-black hover:bg-zinc-200 font-medium">
+            Purchase
+          </Button>
+        </form>
       </CardContent>
     </Card>
   )

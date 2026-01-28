@@ -6,20 +6,23 @@ import { VideoMarquee } from '@/components/landing/video-marquee'
 import { ProvenNiches } from '@/components/landing/proven-niches'
 import { Pricing } from '@/components/landing/pricing'
 import { FAQ } from '@/components/landing/faq'
+import { PageLoader } from '@/components/landing/page-loader'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <Navbar />
-      <main>
-        <Hero />
-        <LogoTicker />
-        <ProvenNiches />
-        <VideoMarquee />
-        <Pricing />
-        <FAQ />
-      </main>
-      <Footer />
-    </div>
+    <PageLoader>
+      <div className="min-h-screen bg-zinc-950">
+        <Navbar />
+        <main>
+          <Hero />
+          <LogoTicker />
+          <ProvenNiches />
+          <VideoMarquee />
+          <Pricing />
+          <FAQ />
+        </main>
+        <Footer />
+      </div>
+    </PageLoader>
   )
 }

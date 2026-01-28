@@ -18,6 +18,8 @@ export const CREDIT_COSTS = {
   asmr_video: 5,
 } as const
 
+export const CREDIT_CURRENCY = 'usd'
+
 export const CREDIT_PACKAGES = [
   { id: 'starter', name: 'Starter', credits: 50, price: 499 },
   { id: 'popular', name: 'Popular', credits: 150, price: 999 },

@@ -7,7 +7,7 @@ CREATE TABLE profiles (
   email TEXT,
   full_name TEXT,
   avatar_url TEXT,
-  credits INTEGER DEFAULT 10,
+  credits INTEGER DEFAULT 5,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

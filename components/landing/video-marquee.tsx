@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { LoadedVideo } from "./loaded-video"
 
 export function VideoMarquee() {
   const videos = [
@@ -29,7 +29,7 @@ export function VideoMarquee() {
              <div key={i} className="flex gap-4 items-center pr-4">
                 {videos.map((src, idx) => (
                   <div key={idx} className="relative w-64 h-96 rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800 shrink-0 hover:border-indigo-500/50 hover:shadow-[0_0_30px_-10px_theme(colors.indigo.500/0.3)] transition-all duration-300">
-                     <video
+                     <LoadedVideo
                         src={src}
                         className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
                         autoPlay
